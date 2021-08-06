@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_cb_topic_category">
+    <sys_cb_topic_category action="INSERT_OR_UPDATE">
+        <description/>
+        <name>mySymptomCategory</name>
+        <sys_class_name>sys_cb_topic_category</sys_class_name>
+        <sys_created_by>shailendra</sys_created_by>
+        <sys_created_on>2021-08-06 10:09:23</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_id>171408fd077170103768fa9e7c1ed03e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>mySymptomCategory</sys_name>
+        <sys_package display_value="sumptom nlu" source="x_410019_sumptom_n">9be1c0b9077170103768fa9e7c1ed06f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="sumptom nlu">9be1c0b9077170103768fa9e7c1ed06f</sys_scope>
+        <sys_update_name>sys_cb_topic_category_171408fd077170103768fa9e7c1ed03e</sys_update_name>
+        <sys_updated_by>shailendra</sys_updated_by>
+        <sys_updated_on>2021-08-06 10:09:23</sys_updated_on>
+        <visible>false</visible>
+    </sys_cb_topic_category>
+</record_update>

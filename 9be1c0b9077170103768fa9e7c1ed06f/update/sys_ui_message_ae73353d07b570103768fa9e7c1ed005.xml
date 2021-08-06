@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_message">
+    <sys_ui_message action="INSERT_OR_UPDATE">
+        <application>Virtual Agent</application>
+        <key>We found the above disease that are related to your symptom.</key>
+        <language>en</language>
+        <message>We found the above disease that are related to your symptom.</message>
+        <sys_class_name>sys_ui_message</sys_class_name>
+        <sys_created_by>shailendra</sys_created_by>
+        <sys_created_on>2021-08-06 18:15:41</sys_created_on>
+        <sys_id>ae73353d07b570103768fa9e7c1ed005</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>We found the above disease that are related to your symptom.</sys_name>
+        <sys_package display_value="sumptom nlu" source="x_410019_sumptom_n">9be1c0b9077170103768fa9e7c1ed06f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="sumptom nlu">9be1c0b9077170103768fa9e7c1ed06f</sys_scope>
+        <sys_update_name>sys_ui_message_ae73353d07b570103768fa9e7c1ed005</sys_update_name>
+        <sys_updated_by>shailendra</sys_updated_by>
+        <sys_updated_on>2021-08-06 18:15:41</sys_updated_on>
+    </sys_ui_message>
+</record_update>

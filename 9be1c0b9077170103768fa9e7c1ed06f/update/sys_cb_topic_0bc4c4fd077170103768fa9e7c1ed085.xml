@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_cb_topic">
+    <sys_cb_topic action="INSERT_OR_UPDATE">
+        <applicability/>
+        <applicability_mode>query</applicability_mode>
+        <auto_resolution_enabled>false</auto_resolution_enabled>
+        <category/>
+        <channels/>
+        <connect_queue/>
+        <description/>
+        <flexible_conversation_switching>false</flexible_conversation_switching>
+        <graph>{
+  "graph_api_version": "1.0.31",
+  "goals": {
+    "primary": {
+      "id": "primary",
+      "trigger": {
+        "type": "primary"
+      },
+      "name": "primary",
+      "applicability": "",
+      "description": "",
+      "nodes": {
+        "e059b907da804173bb150a490ce65064": {
+          "id": "e059b907da804173bb150a490ce65064",
+          "stepType": "Start",
+          "name": "Start",
+          "greetingResponse": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Hi how are you today?"
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          }
+        },
+        "841b9214aad2444d8038f264f5ea7349": {
+          "id": "841b9214aad2444d8038f264f5ea7349",
+          "stepType": "TerminateGoal",
+          "name": "End",
+          "confirmationMessage": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Soon we'll be providing the nearest hospital for your Disease"
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          }
+        },
+        "3751cf8306c042169929bbb08ef16a3f": {
+          "stepType": "ChoicePrompt",
+          "name": "check_symptoms",
+          "prompt": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Want to check your symptoms?"
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          },
+          "confirmMessage": {
+            "value": "",
+            "mode": "simple"
+          },
+          "acknowledgeMsg": {
+            "value": "",
+            "mode": "simple"
+          },
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "skippable": {
+            "value": "",
+            "mode": "query"
+          },
+          "defaultValue": {
+            "value": "",
+            "mode": "simple"
+          },
+          "variableId": "0721cb21bcc44457937789221485f6ad",
+          "id": "3751cf8306c042169929bbb08ef16a3f",
+          "withNluUserInput": false,
+          "skipIfFulfilled": false
+        },
+        "400f12d2347747279ad16231693eb4de": {
+          "id": "400f12d2347747279ad16231693eb4de",
+          "stepType": "Decision",
+          "name": "Decision"
+        },
+        "01c7018118494eaa9d7f8c49968e4262": {
+          "id": "01c7018118494eaa9d7f8c49968e4262",
+          "stepType": "TextOutput",
+          "name": "thanks",
+          "secure": false,
+          "value": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Thank You!"
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          },
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          }
+        },
+        "3d9695788c854bc4acd2b90e9891067f": {
+          "stepType": "ReferenceChoicePrompt",
+          "name": "symp_choice",
+          "prompt": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Choose your Symptoms"
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          },
+          "confirmMessage": {
+            "value": "",
+            "mode": "simple"
+          },
+          "acknowledgeMsg": {
+            "value": "",
+            "mode": "simple"
+          },
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "skippable": {
+            "value": "",
+            "mode": "query"
+          },
+          "defaultValue": {
+            "value": "",
+            "mode": "simple"
+          },
+          "variableId": "bcacc7f7928147438ab575419ce35c16",
+          "id": "3d9695788c854bc4acd2b90e9891067f",
+          "mode": "external",
+          "script": "(function execute() {\n    /* Code your script logic here. For example, you might want to call an external web service\n       to find the best local Italian restaurants.  Call a Restaurants Web Service then use the results\n       to populate an options array.\n\n        var options = [];\n        options.push({ 'value': 'best_italian_1', 'label': gs.getMessage('Best Italian Restaurant Ever'), 'render_style': 'data' });\n        options.push({ 'value': 'best_italian_2', 'label': gs.getMessage('Even Better Italian Restaurant'), 'render_style': 'data' });\n        return options;\n    */\nvar req = new sn_ws.RESTMessageV2();\n    req.setEndpoint('http://13.232.44.57/api/v2/symptoms/list/');\n    req.setHttpMethod('GET');\n    req.setRequestHeader(\"Accept\",\"application/json\");\n    var res = req.execute();\n    var data = JSON.parse(res.getBody());\n    var symp = data.records;\n    //vaVars.response = res.getRequestBody();\n   // vaVars.response = data.records;\n    //return vaVars.response;\n\n    //var options = data.records; // add options here...\n    var options = [];\nfor(var i = 0; i &lt; symp.length; i++)\n{\n  var myArr = symp[i].split(\"_\");\n  var lbl = '';\n  for(var k = 0; k &lt; myArr.length; k++){\n      var txt = myArr[k];\n      if(lbl==''){\n        lbl = txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();\n      }else{\n        lbl = lbl+' '+txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();\n      }\n  }\n  options.push({'value':symp[i],'lable': lbl,'render_style': 'data'})\n  //options.push({'value':symp[i]})\n}\n\n    \n    //options.push({'value':'itching','lable':'Itching'},{'value':'skin_rash','lable':'Skeen Rash'})\n    return options;\n})()\n",
+          "metadataScript": "",
+          "noRecordsResponseMsg": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Sorry symptoms data is not available right now."
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          },
+          "condition": {
+            "value": "(function execute() {\n    /* Code your script logic here. For example, you might want to call an external web service\n       to find the best local Italian restaurants.  Call a Restaurants Web Service then use the results\n       to populate an options array.\n\n        var options = [];\n        options.push({ 'value': 'best_italian_1', 'label': gs.getMessage('Best Italian Restaurant Ever'), 'render_style': 'data' });\n        options.push({ 'value': 'best_italian_2', 'label': gs.getMessage('Even Better Italian Restaurant'), 'render_style': 'data' });\n        return options;\n    */\nvar req = new sn_ws.RESTMessageV2();\n    req.setEndpoint('http://13.232.44.57/api/v2/symptoms/list/');\n    req.setHttpMethod('GET');\n    req.setRequestHeader(\"Accept\",\"application/json\");\n    var res = req.execute();\n    var data = JSON.parse(res.getBody());\n    var symp = data.records;\n    //vaVars.response = res.getRequestBody();\n   // vaVars.response = data.records;\n    //return vaVars.response;\n\n    //var options = data.records; // add options here...\n    var options = [];\nfor(var i = 0; i &lt; symp.length; i++)\n{\n  var myArr = symp[i].split(\"_\");\n  var lbl = '';\n  for(var k = 0; k &lt; myArr.length; k++){\n      var txt = myArr[k];\n      if(lbl==''){\n        lbl = txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();\n      }else{\n        lbl = lbl+' '+txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();\n      }\n  }\n  options.push({'value':symp[i],'lable': lbl,'render_style': 'data'})\n  //options.push({'value':symp[i]})\n}\n\n    \n    //options.push({'value':'itching','lable':'Itching'},{'value':'skin_rash','lable':'Skeen Rash'})\n    return options;\n})()\n",
+            "mode": "external_script"
+          },
+          "withNluUserInput": false,
+          "skipIfFulfilled": false
+        },
+        "97337e23d6ed4b8999bc607655051645": {
+          "id": "97337e23d6ed4b8999bc607655051645",
+          "stepType": "TableOutput",
+          "name": "disease",
+          "header": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Your Related Disease"
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          },
+          "displayColumnHeaders": true,
+          "dataSourceType": "script",
+          "script": "(function execute() {\n    /* Code your script logic here. For example, you might want to call an external web service\n    to find the best local Italian restaurants.  Call a Restaurants Web Service then use the results\n    to populate a rows array.\n        var headers = [\n          'Name',        // Column 1 header\n          'Description'  // Column 2 header\n        ];\n        var rows = [];\n        rows.push([                                        // Row 1\n          'De Napoli',                                     // Column 1 value\n          gs.getMessage('Best Italian Restaurant Ever')    // Column 2 value\n        ]);\n        rows.push([                                        // Row 2\n          'Albertos',                                      // Column 1 value\n          gs.getMessage('Even Better Italian Restaurant')  // Column 2 value\n        ]);\n        return {\n            columnHeaders: headers,\n            columnValues: rows\n        };\n    */\n\n    var headers = [];\n    var rows = [];\n    //var inputval = vaInputs.symp_choice;\n    var inputval = vaVars.response;\n    var req = new sn_ws.RESTMessageV2();\n    req.setEndpoint('http://13.232.44.57/api/v2/disease/?'+inputval);\n    req.setHttpMethod('GET');\n    req.setRequestHeader(\"Accept\",\"application/json\");\n    var res = req.execute();\n    var data = JSON.parse(res.getBody());\n    var symp = data.records;\n    var options = [];\n    for(var i = 0; i &lt; symp.length; i++)\n     {\n       rows.push([\n          symp[i].prognosis\n        ]);\n     }\n     var headers = [\n          ''\n        ];\n    return {\n        columnHeaders: headers,\n        columnValues: rows\n    };\n})()\n",
+          "tableName": "",
+          "tableCondition": {
+            "value": "",
+            "mode": "glide_query"
+          },
+          "columns": [
+            {
+              "key": "",
+              "value": "",
+              "label": ""
+            }
+          ],
+          "noRecordsResponseMsg": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Sorry No Disease Found!"
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          },
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          }
+        },
+        "c12d11abbeb740b5a3a69a39ea035b96": {
+          "id": "c12d11abbeb740b5a3a69a39ea035b96",
+          "stepType": "TextOutput",
+          "name": "summary",
+          "secure": false,
+          "value": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "We found the above disease that are related to your symptom."
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          },
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          }
+        },
+        "e92355ffbabc4bedb3489255b7cf6ed6": {
+          "stepType": "ChoicePrompt",
+          "name": "more_choice",
+          "prompt": {
+            "value": "(function execute() {\n    /* Return a quoted string.  For example:\n\n       if (vaInputs.first_name == 'Bill') {\n           return gs.getMessage('hi there {0}', [vaInputs.first_name]);\n       } else {\n           return gs.getMessage('how are you {0}', [vaInputs.last_name]);\n       }\n    */\n    \n    gs.info('shailendra1');\n    gs.info(vaVars.response);\n    gs.info(vaInputs.symp_choice);\n    if(vaVars.response=='' || vaVars.response==null){\n        vaVars.response = vaInputs.symp_choice+'=1';\n    }else{\n        vaVars.response = vaVars.response+'&amp;'+vaInputs.symp_choice+'=1'; \n    }\n    if(vaVars.display_disease=='' || vaVars.display_disease==null){\n        vaVars.display_disease = vaInputs.symp_choice;\n    }else{\n        vaVars.display_disease = vaVars.display_disease+' &amp; '+vaInputs.symp_choice; \n    }\n    \n    return 'You have choose '+vaVars.display_disease+'. Do you want to choose more?';\n})()\n",
+            "mode": "script"
+          },
+          "confirmMessage": {
+            "value": "",
+            "mode": "simple"
+          },
+          "acknowledgeMsg": {
+            "value": "",
+            "mode": "simple"
+          },
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "skippable": {
+            "value": "",
+            "mode": "query"
+          },
+          "defaultValue": {
+            "value": "",
+            "mode": "simple"
+          },
+          "variableId": "bf5f085917474a95addbebfeac132cd7",
+          "id": "e92355ffbabc4bedb3489255b7cf6ed6",
+          "withNluUserInput": false,
+          "skipIfFulfilled": false
+        },
+        "558d948d7951480c9371c6edf317e500": {
+          "id": "558d948d7951480c9371c6edf317e500",
+          "stepType": "Decision",
+          "name": "Decision"
+        }
+      },
+      "edges": [
+        {
+          "id": "186c34a220a24763b32f1d2ff174f4bf",
+          "edgeType": "Edge",
+          "source": "e059b907da804173bb150a490ce65064",
+          "target": "3751cf8306c042169929bbb08ef16a3f",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "bf57793ecc8948cfb79daeda6efcb9f4",
+          "edgeType": "Edge",
+          "source": "3751cf8306c042169929bbb08ef16a3f",
+          "target": "400f12d2347747279ad16231693eb4de",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "ed40e6fd2da14aa1901f0dafbffa6e8a",
+          "edgeType": "Branch",
+          "source": "400f12d2347747279ad16231693eb4de",
+          "target": "01c7018118494eaa9d7f8c49968e4262",
+          "sourcePort": "",
+          "targetPort": "",
+          "expression": {
+            "value": "vaInputs.check_symptoms=0",
+            "mode": "query"
+          },
+          "label": "No"
+        },
+        {
+          "id": "83d90e6cbafb4b178cc8bee39e75e9fd",
+          "edgeType": "Edge",
+          "source": "01c7018118494eaa9d7f8c49968e4262",
+          "target": "841b9214aad2444d8038f264f5ea7349",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "ef18b1bd7b5f4d188a19c51afd532a06",
+          "edgeType": "Branch",
+          "source": "400f12d2347747279ad16231693eb4de",
+          "target": "3d9695788c854bc4acd2b90e9891067f",
+          "sourcePort": "",
+          "targetPort": "",
+          "expression": {
+            "value": "vaInputs.check_symptoms=1",
+            "mode": "query"
+          },
+          "label": "Yes"
+        },
+        {
+          "id": "e10707d8550d41559ade333959ed9b0c",
+          "edgeType": "Edge",
+          "source": "97337e23d6ed4b8999bc607655051645",
+          "target": "c12d11abbeb740b5a3a69a39ea035b96",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "0b9fd48e50494d85a64ee7aaa4d5db69",
+          "edgeType": "Edge",
+          "source": "c12d11abbeb740b5a3a69a39ea035b96",
+          "target": "841b9214aad2444d8038f264f5ea7349",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "d1e59584f7294432bc1dc72b7fc267a6",
+          "edgeType": "Edge",
+          "source": "3d9695788c854bc4acd2b90e9891067f",
+          "target": "e92355ffbabc4bedb3489255b7cf6ed6",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "71ba06452e514fc1a4dbd2303cdb6fce",
+          "edgeType": "Edge",
+          "source": "e92355ffbabc4bedb3489255b7cf6ed6",
+          "target": "558d948d7951480c9371c6edf317e500",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "68af57d4c5914c369aa4b60875c24d3f",
+          "edgeType": "Branch",
+          "source": "558d948d7951480c9371c6edf317e500",
+          "target": "97337e23d6ed4b8999bc607655051645",
+          "sourcePort": "",
+          "targetPort": "",
+          "expression": {
+            "value": "vaInputs.more_choice=0",
+            "mode": "query"
+          },
+          "label": "No"
+        },
+        {
+          "id": "895647127474484f80fc83e2971dd5ed",
+          "edgeType": "Branch",
+          "source": "558d948d7951480c9371c6edf317e500",
+          "target": "3d9695788c854bc4acd2b90e9891067f",
+          "sourcePort": "",
+          "targetPort": "",
+          "expression": {
+            "value": "vaInputs.more_choice=1",
+            "mode": "query"
+          },
+          "label": "Yes"
+        }
+      ]
+    }
+  },
+  "variables": {
+    "current-user": {
+      "category": "vaInputs",
+      "id": "current-user",
+      "label": "User",
+      "name": "user",
+      "table": "sys_user",
+      "varType": "reference"
+    },
+    "d6c734faf4b448ad8e3ee031edc2e782": {
+      "id": "d6c734faf4b448ad8e3ee031edc2e782",
+      "value": {
+        "value": "",
+        "mode": "simple"
+      },
+      "name": "response",
+      "label": "response",
+      "varType": "script",
+      "category": "vaVars"
+    },
+    "0721cb21bcc44457937789221485f6ad": {
+      "id": "0721cb21bcc44457937789221485f6ad",
+      "name": "check_symptoms",
+      "label": "Check_symptoms",
+      "varType": "choice",
+      "choices": [
+        {
+          "label": "Yes",
+          "value": "1"
+        },
+        {
+          "label": "No",
+          "value": "0",
+          "checked": true
+        }
+      ],
+      "category": "vaInputs"
+    },
+    "bcacc7f7928147438ab575419ce35c16": {
+      "id": "bcacc7f7928147438ab575419ce35c16",
+      "name": "symp_choice",
+      "label": "Symp_choice",
+      "varType": "reference",
+      "table": "",
+      "category": "vaInputs"
+    },
+    "bf5f085917474a95addbebfeac132cd7": {
+      "id": "bf5f085917474a95addbebfeac132cd7",
+      "name": "more_choice",
+      "label": "More_choice",
+      "varType": "choice",
+      "choices": [
+        {
+          "label": "Yes",
+          "value": "1"
+        },
+        {
+          "label": "No",
+          "value": "0",
+          "checked": true
+        }
+      ],
+      "category": "vaInputs"
+    },
+    "5c7f534d2436497d95d093f7fcbe4399": {
+      "id": "5c7f534d2436497d95d093f7fcbe4399",
+      "value": {
+        "value": "",
+        "mode": "simple"
+      },
+      "name": "display_disease",
+      "label": "display_disease",
+      "varType": "script",
+      "category": "vaVars"
+    }
+  }
+}</graph>
+        <key_phrases>My Symptom Checker,symptom,disease</key_phrases>
+        <library>false</library>
+        <live_agent>false</live_agent>
+        <name>My Symptom Checker</name>
+        <nlu_intent/>
+        <nlu_intent_label/>
+        <nlu_model/>
+        <nlu_model_label/>
+        <nlu_provider/>
+        <roles/>
+        <source_topic_id/>
+        <sys_class_name>sys_cb_topic</sys_class_name>
+        <sys_created_by>shailendra</sys_created_by>
+        <sys_created_on>2021-08-06 10:12:07</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_id>0bc4c4fd077170103768fa9e7c1ed085</sys_id>
+        <sys_mod_count>61</sys_mod_count>
+        <sys_name>My Symptom Checker</sys_name>
+        <sys_package display_value="sumptom nlu" source="x_410019_sumptom_n">9be1c0b9077170103768fa9e7c1ed06f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="sumptom nlu">9be1c0b9077170103768fa9e7c1ed06f</sys_scope>
+        <sys_update_name>sys_cb_topic_0bc4c4fd077170103768fa9e7c1ed085</sys_update_name>
+        <sys_updated_by>shailendra</sys_updated_by>
+        <sys_updated_on>2021-08-06 19:42:37</sys_updated_on>
+        <triggerable_by_notification>false</triggerable_by_notification>
+        <type>STANDARD</type>
+        <variables/>
+    </sys_cb_topic>
+    <sys_variable_value action="delete_multiple" query="document_key=0bc4c4fd077170103768fa9e7c1ed085"/>
+</record_update>

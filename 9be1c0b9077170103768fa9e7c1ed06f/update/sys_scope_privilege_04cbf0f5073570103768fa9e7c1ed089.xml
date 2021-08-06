@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_scope_privilege">
+    <sys_scope_privilege action="INSERT_OR_UPDATE">
+        <operation>execute</operation>
+        <source_scope display_value="sumptom nlu">9be1c0b9077170103768fa9e7c1ed06f</source_scope>
+        <status>allowed</status>
+        <sys_class_name>sys_scope_privilege</sys_class_name>
+        <sys_created_by>shailendra</sys_created_by>
+        <sys_created_on>2021-08-06 14:12:12</sys_created_on>
+        <sys_id>04cbf0f5073570103768fa9e7c1ed089</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>VaTopicRuntimeUtil</sys_name>
+        <sys_package display_value="sumptom nlu" source="x_410019_sumptom_n">9be1c0b9077170103768fa9e7c1ed06f</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="sumptom nlu">9be1c0b9077170103768fa9e7c1ed06f</sys_scope>
+        <sys_update_name>sys_scope_privilege_04cbf0f5073570103768fa9e7c1ed089</sys_update_name>
+        <sys_updated_by>shailendra</sys_updated_by>
+        <sys_updated_on>2021-08-06 14:12:12</sys_updated_on>
+        <target_name>VaTopicRuntimeUtil</target_name>
+        <target_scope display_value="Global">global</target_scope>
+        <target_type>sys_script_include</target_type>
+    </sys_scope_privilege>
+</record_update>
